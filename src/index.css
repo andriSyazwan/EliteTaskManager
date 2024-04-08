@@ -1,0 +1,82 @@
+body{
+  background-color: grey;
+}
+
+.toDoList{
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-align: center;
+  margin-top: 100px;
+}
+
+h1{
+  font-size: 4rem;
+}
+
+button{
+  font-size: 1.7rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+
+.addButton{
+  background-color: #3DED97;
+}
+
+.addButton:hover{
+  background-color: #03C04A;
+}
+
+.deleteButton{
+  background-color: #E3242B;
+}
+
+.deleteButton:hover{
+  background-color: #9B1003;
+}
+
+.editButton{
+  background-color: #E4CD05;
+}
+
+.editButton:hover{
+  background-color: #D2B55B;
+}
+
+input[type="text"]{
+  font-size: 1.6rem;
+  padding: 10px;
+  border: 2px solid grey;
+  border-radius: 5px;
+  color: black;
+}
+
+ol{
+  padding: 0;
+}
+
+li{
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 15px;
+  background-color: #708090;
+  margin-bottom: 10px;
+  border: 3px solid lightgray;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.text{
+  flex: 1;
+}
+
+.deleteButton, .editButton{
+  padding: 8px 12px;
+  font-size: 1.4rem;
+  margin-left: 10px;
+}

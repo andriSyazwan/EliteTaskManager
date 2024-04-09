@@ -5,6 +5,7 @@ import { useLocalStorage } from './hooks/localstorage';
 
 function ToDoList(){
     const localStorageKey = "tasks";
+    localStorage.removeItem(localStorageKey);
     const todayDate = new Date();
     const defaultTask = {status: false,
                         title: "Let's get started",
@@ -12,31 +13,32 @@ function ToDoList(){
                         date: todayDate,
                         priority: PRIORITY.LOW};
     const [tasks, setTasks] = useLocalStorage(localStorageKey, [defaultTask]);
-    const [newTask, setNewTask] = useState({status: false,
-        title: "",
-        description: "",
-        date: todayDate,
-        priority: PRIORITY.LOW});
+    const [newTask, setNewTask] = useState(null);
+
     const [newTaskForm, setNewTaskForm] = useState(false);
+    const [showDescription, setShowDescription] = useState(false);
 
     const [title, setTitle] = useState("");
     const [status, setStatus] = useState(false);
-    const [description, setDiscription] = useState("");
+    const [description, setDescription] = useState("");
     const [priority, setNewPriority] = useState(PRIORITY.LOW);
 
-    function handleInputChange(event) {
-        setNewTask(event.target.value);
+    function handleTitleChange(event) {
+        setTitle(event.target.value);
     }
 
     function addTask() {
         if(title.trim() !== "") {
-            setTasks(t => [...tasks, newTask]);
             setNewTask({status: false,
-                title: "",
-                description: "",
+                title: title,
+                description: description,
                 date: todayDate,
                 priority: PRIORITY.LOW});
+            setTasks(t => [...tasks, newTask]);
+            setNewTask(null)
         }
+
+
     }
 
     function deleteTask(index) {
@@ -54,6 +56,10 @@ function ToDoList(){
 
     function changePriority(index) {
 
+    }
+
+    function toggleTaskStatus(index) {
+        
     }
 
     function moveTaskUp(index) {
@@ -98,7 +104,7 @@ function ToDoList(){
                     type="text"
                     placeholder="What would you like to do.."
                     value={title}
-                    onChange={handleInputChange}
+                    onChange={handleTitleChange}
                     />
                 <button className="addButton"
                     onClick={addTask}>
@@ -149,18 +155,46 @@ function ToDoList(){
         <ol>
             {tasks.map((task, index) =>
                 <li key={index}>
+                    <input type="checkbox" checked={task.status} onChange={() => toggleTaskStatus(index)}/>
                     <span className="text">{task.title}</span>
-                    <span className="description">{task.description.length > 20 ? task.description.substring(0, 20) + "..." : task.description}</span>
-                    <span className="date">{task.date.substring(0,10)}</span>
+                    <span className="description"
+                            onClick={() => setShowDescription(!showDescription)}>{task.description.length > 20 ? task.description.substring(0, 20) + "..." : task.description}</span>
+                    
+                    {showDescription && (
+                        <div className="modal">
+                            <div className="modal-content">
+                                <p>{task.description}</p>
+                                <button onClick={() => setShowDescription(false)}>Close</button>
+                            </div>
+                        </div>
+                    )}
+
+                    <div>
+                        <button 
+                            className={task.priority === PRIORITY.LOW ? 'active' : ''}
+                            onClick={() => setTaskPriority(index, PRIORITY.LOW)}
+                        >
+                            Low
+                        </button>
+                        <button 
+                            className={task.priority === PRIORITY.MEDIUM ? 'active' : ''}
+                            onClick={() => setTaskPriority(index, PRIORITY.MEDIUM)}
+                        >
+                            Med
+                        </button>
+                        <button 
+                            className={task.priority === PRIORITY.HIGH ? 'active' : ''}
+                            onClick={() => setTaskPriority(index, PRIORITY.HIGH)}
+                        >
+                            High
+                        </button>
+                    </div>
+
+                    <span className="date">{task.date.toLocaleDateString()}</span>
                     <button
                         className="deleteButton"
                         onClick={() => deleteTask(index)}>
-                            Delete
-                    </button>
-                    <button
-                        className="editButton"
-                        onClick={() => editTask(index)}>
-                            Edit
+                            X
                     </button>
                 </li>
             )}
